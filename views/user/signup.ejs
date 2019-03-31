@@ -1,0 +1,32 @@
+<%- include('./includes/head.ejs') %>
+    <div class="container">
+            <main>
+                <%if(errorMessage) {%>
+                    <p class="alert alert-danger"><%=errorMessage%></p>
+                <%}%>
+                <div class="auth-form">
+                    <h1>Rejestracja użytkownika</h1>
+                    <form action="/user/signup" method="POST">
+                    <div class="field">
+                        <input type="text" name="pesel" placeholder="PESEL" class="form-control">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="firstName" placeholder="Imię" class="form-control">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="lastName" placeholder="Nazwisko" class="form-control">
+                    </div>
+                    <div class="field">
+                        <input type="email" name="email" placeholder="E-mail" class="form-control">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="password" placeholder="Hasło" class="form-control">
+                    </div>
+                    <div class="field">
+                        <input type="password" name="Confirmpassword" placeholder="Potwierdź hasło" class="form-control">
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <button class="btn btn-dark" type="submit">Zarejestruj</button>
+                </form>
+            </main>
+        <%- include('./includes/footer.ejs') %>

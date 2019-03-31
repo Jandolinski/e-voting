@@ -1,0 +1,25 @@
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">E-Voting User Panel</a>
+</nav>
+
+<div class="container-fluid">
+<div class="row">
+  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="/user/dashboard">
+            Panel użytkownika
+          </a>
+        </li>
+        <%if(isUserAuthenticated){%>
+          <li class="nav-item">
+              <form action="/user/logout" method="POST" >
+                  <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                  <button type="submit" class="btn nav-link">Wyloguj</button>
+               </form>
+          </li>
+        <%}%>
+      </ul>
+    </div>
+  </nav>

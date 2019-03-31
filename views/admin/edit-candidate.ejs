@@ -1,0 +1,39 @@
+<%- include('./includes/head.ejs') %>
+
+<%- include('./includes/navigation.ejs') %>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2"><% if(editing) {%>Edytuj kandydata<% } else { %>Utwórz kandydata<% } %></h1>
+</div>
+<form action="/admin/<% if(editing) { %>edit-candidate<% } else { %>add-candidate<% } %>" method="POST">
+    <div class="form-group row">
+        <label for="firstName" class="col-sm-3 col-form-label">Imię</label>
+        <div class="col-sm-9">
+            <input type="text" name="firstName" value="<% if(editing) { %><%=candidate.firstName%><% } %>" class="form-control">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="lastName" class="col-sm-3 col-form-label">Nazwisko</label>
+        <div class="col-sm-9">
+            <input type="text" name="lastName" value="<% if(editing) { %><%=candidate.lastName%><% } %>" class="form-control">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="id_election" class="col-sm-3 col-form-label">Wybory</label>
+        <div class="col-sm-9">
+         <select name="id_election" class="form-control">
+             <% for (let election of elections) { %>
+                 <option value="<%=election.id%>" <% if(editing){ if(election.id===candidate.electionId) { %> selected="selected" <%}}%>><%=election.type%> | <%=election.start_date%></option>
+             <% } %>
+         </select>
+        </div>
+    </div>
+    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+    <% if(editing) { %>
+        <input type="hidden" name="candidateId" value="<%=candidate.id%>">
+        <input type="hidden" name="votes" value="<%=candidate.votes%>">
+    <% } %>
+    <button class="btn btn-dark" type="submit"><% if(editing) { %>Aktualizuj kandydata<% } else {%>Dodaj kandydata<% } %></button>
+</form>
+</main>
+<%- include('./includes/footer.ejs') %>

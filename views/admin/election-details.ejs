@@ -1,0 +1,76 @@
+<%- include('./includes/head.ejs') %>
+
+<%- include('./includes/navigation.ejs') %>
+
+  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2"><%=election.type%></h1>
+    </div>
+    <% if (candidates.length > 0) { %>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <canvas id="chDonut1"></canvas>
+    </div>
+    <h2>Kandydaci</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Głosy</th>
+            <th>Edytuj</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let candidate of candidates) { %>
+            <tr>
+              <td><%= candidate.firstName %></td>
+              <td><%= candidate.lastName %></td>
+              <td><%= candidate.votes %></td>
+              <td><a href="/admin/edit-candidate/<%=candidate.id%>?edit=true" class="btn btn-dark btn-sm">Edytuj</a></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <%} else {%>
+    <h2>Nie ma jeszcze żadnych kandydatów</h2>
+    <% } %>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+<script>
+/* chart.js chart examples */
+
+// chart colors
+var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+
+/* 3 donut charts */
+var donutOptions = {
+  cutoutPercentage: 85, 
+  legend: {position:'bottom', padding:5, labels: {pointStyle:'circle', usePointStyle:true}}
+};
+
+// donut 1
+var chDonutData1 = {
+    labels: [<%for(let candidate of candidates) { %>'<%=candidate.firstName%> <%=candidate.lastName%>', <%}%>],
+    datasets: [
+      {
+        backgroundColor: colors.slice(0,3),
+        borderWidth: 0,
+        data: [<%for(let candidate of candidates) { %><%=candidate.votes%>, <%}%>]
+      }
+    ]
+};
+
+var chDonut1 = document.getElementById("chDonut1");
+if (chDonut1) {
+  new Chart(chDonut1, {
+      type: 'pie',
+      data: chDonutData1,
+      options: donutOptions
+  });
+}
+
+</script>
+
+<%- include('./includes/footer.ejs') %>

@@ -1,0 +1,36 @@
+<%- include('./includes/head.ejs') %>
+
+<%- include('./includes/navigation.ejs') %>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2"><% if(editing) {%>Edytuj wybory<% } else { %>Utwórz wybory<% } %></h1>
+</div>
+
+<form action="/admin/<% if(editing) { %>edit-election<% } else { %>add-election<% } %>" method="POST">
+
+    <div class="form-group row">
+        <label for="type" class="col-sm-3 col-form-label">Rodzaj wyborów</label>
+        <div class="col-sm-9">
+            <input type="text" name="type" value="<% if(editing) { %><%=election.type%><% } %>" class="form-control">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="start_date" class="col-sm-3 col-form-label">Data rozpoczęcia<br>(DD-MM-YYYY HH:MM)</label>
+        <div class="col-sm-9">
+            <input type="text" name="start_date" value="<% if(editing) { %><%=election.start_date%><% } %>" class="form-control">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="end_date" class="col-sm-3 col-form-label">Data zakończenia<br>(DD-MM-YYYY HH:MM)</label>
+        <div class="col-sm-9">
+            <input type="text" name="end_date" value="<% if(editing) { %><%=election.end_date%><% } %>" class="form-control">
+        </div>
+    </div>
+    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+    <% if(editing) { %>
+        <input type="hidden" name="electionId" value="<%=election.id%>">
+    <% } %>
+    <button class="btn btn-dark" type="submit"><% if(editing) { %>Aktualizuj wybory<% } else {%>Dodaj wybory<% } %></button>
+</form>
+</main>
+<%- include('./includes/footer.ejs') %>

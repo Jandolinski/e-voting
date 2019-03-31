@@ -1,0 +1,22 @@
+<%- include('./includes/head.ejs') %>
+    <div class="container">
+    <main>
+        <%if(errorMessage) {%>
+            <p class="alert alert-danger"><%=errorMessage%></p>
+        <%}%>
+        <div class="auth-form">
+            <h1>Logowanie do panelu użytkownika</h1>
+            <p>Testowy użytkownik: PESEL: 01234567890 Hasło: 123456</p>
+          <form action="/user/login" method="POST">
+              <div class="field">
+                  <input type="text" placeholder="PESEL" name="pesel" class="form-control">
+              </div>
+              <div class="field">
+                  <input type="password" placeholder="Hasło" name="password" class="form-control">
+              </div>
+              <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+              <button class="btn btn-dark" type="submit">Login</button>
+          </form>
+        </div>
+    </main>
+    <%- include('./includes/footer.ejs') %>
