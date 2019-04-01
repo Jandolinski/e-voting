@@ -67,6 +67,10 @@ exports.postSignup = (req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    if(password != confirmPassword) {
+        req.flash('error', 'hasła nie zgadzają się');
+        return res.redirect('/admin/signup');
+    }
     Admin.findOne({where: {email: email}})
     .then(adminDoc => {
         if(adminDoc) {
