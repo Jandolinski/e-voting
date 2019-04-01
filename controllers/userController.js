@@ -71,6 +71,10 @@ exports.postSignup = (req,res,next) => {
     const lastName = req.body.lastName;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    if(password != confirmPassword) {
+        req.flash('error', 'hasła nie zgadzają się');
+        return res.redirect('/user/signup');
+    }
     User.findOne({where: {pesel: pesel}})
     .then(userDoc => {
         if(userDoc) {
