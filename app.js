@@ -38,11 +38,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const store = new MySQLStore({
-    host: 'sql.wrekol.nazwa.pl',
+    host: 'localhost',
     port: 3306,
-    user: 'wrekol_e-voting',
-    password: 'e-votingProj2019',
-    database: 'wrekol_e-voting'
+    user: 'root',
+    password: '',
+    database: 'e-voting'
 });
 
 app.use(session({

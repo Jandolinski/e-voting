@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('wrekol_e-voting','wrekol_e-voting','e-votingProj2019', {
+const sequelize = new Sequelize('e-voting','root','', {
     dialect: 'mysql',
-    host: 'sql.wrekol.nazwa.pl'
+    host: 'localhost'
 });
 
 module.exports = sequelize;
