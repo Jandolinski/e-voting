@@ -5,7 +5,7 @@
     <p class="alert alert-danger"><%=errorMessage%></p>
 <%}%>
 <div class="auth-form">
-    <h1>Logowanie do panelu Administratora</h1>
+    <h1>Rejestracja do panelu Administratora</h1>
     <form action="/admin/signup" method="POST">
         <div class="field">
             <input type="email" name="email" placeholder="E-Mail" class="form-control">
@@ -14,7 +14,7 @@
             <input type="password" name="password" placeholder="Hasło" class="form-control">
         </div>
         <div class="field">
-            <input type="password" name="Confirmpassword" placeholder="Potwierdź hasło" class="form-control">
+            <input type="password" name="confirmPassword" placeholder="Potwierdź hasło" class="form-control">
         </div>
         <input type="hidden" name="_csrf" value="<%=csrfToken%>">
         <button class="btn btn-dark" type="submit">Zarejestruj</button>
