@@ -38,54 +38,56 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const store = new MySQLStore({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: '',
-    database: 'e-voting'
+  host: 'sql.essdetailing.nazwa.pl',
+  port: 3306,
+  user: 'essdetailing_e-voting-sql',
+  password: 'E-voting2019',
+  database: 'essdetailing_e-voting-sql'
 });
 
-app.use(session({
+app.use(
+  session({
     secret: 'anySecret',
     resave: false,
     store: store,
-    saveUninitialized: false}));
+    saveUninitialized: false
+  })
+);
 
 app.use(csrfProtection);
 
 app.use(flash());
 
-app.use((req,res,next) => {
-    if(!req.session.user) {
-        return next();
-    }
-    User.findByPk(req.session.user.id)
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findByPk(req.session.user.id)
     .then(user => {
-        req.user = user;
-        next();
+      req.user = user;
+      next();
     })
     .catch(err => console.log(err));
-})
-
-app.use((req,res,next) => {
-    if(!req.session.admin) {
-        return next();
-    }
-    User.findByPk(req.session.admin.id)
-    .then(admin => {
-        req.admin = admin;
-        next();
-    })
-    .catch(err => console.log(err));
-})
-
-app.use((req,res,next) => {
-    res.locals.isAdminAuthenticated = req.session.isAdminLoggedIn,
-    res.locals.isUserAuthenticated = req.session.isUserLoggedIn,
-    res.locals.csrfToken = req.csrfToken();
-    next();
 });
 
+app.use((req, res, next) => {
+  if (!req.session.admin) {
+    return next();
+  }
+  User.findByPk(req.session.admin.id)
+    .then(admin => {
+      req.admin = admin;
+      next();
+    })
+    .catch(err => console.log(err));
+});
+
+app.use((req, res, next) => {
+  (res.locals.isAdminAuthenticated = req.session.isAdminLoggedIn),
+    (res.locals.isUserAuthenticated = req.session.isUserLoggedIn),
+    (res.locals.csrfToken = req.csrfToken());
+  next();
+});
 
 //Take routes from Router
 app.use('/user', userRoutes);
@@ -93,25 +95,24 @@ app.use('/admin', adminRoutes);
 app.use(mainRoutes);
 app.use(notFoundController.get404);
 
-Election.belongsTo(Admin, {constraints: true, onDelete: 'CASCADE'});
+Election.belongsTo(Admin, { constraints: true, onDelete: 'CASCADE' });
 Admin.hasMany(Election);
-Candidate.belongsTo(Admin, {constraints: true, onDelete: 'CASCADE'});
+Candidate.belongsTo(Admin, { constraints: true, onDelete: 'CASCADE' });
 Admin.hasMany(Candidate);
-Candidate.belongsTo(Election, {constraints: true, onDelete: 'CASCADE'});
+Candidate.belongsTo(Election, { constraints: true, onDelete: 'CASCADE' });
 Election.hasMany(Candidate);
 User.hasMany(Vote);
-Vote.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+Vote.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Election.hasMany(Vote);
-Vote.belongsTo(Election, {constraints: true, onDelete: 'CASCADE'});
-
+Vote.belongsTo(Election, { constraints: true, onDelete: 'CASCADE' });
 
 // sequelize.sync({force: true})
-sequelize.sync()
-.then(res => {
-        //Launch app
-        app.listen(3000, () => {
-            console.log("Server started at port 3000");
-})
-})
-.catch(err => console.log(err));
-
+sequelize
+  .sync()
+  .then(res => {
+    //Launch app
+    app.listen(3000, () => {
+      console.log('Server started at port 3000');
+    });
+  })
+  .catch(err => console.log(err));
